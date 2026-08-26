@@ -14,6 +14,8 @@ shopRoutes.get('/products/:productId', shopController.getProduct);
 
 shopRoutes.get('/cart', shopController.getCart);
 
+shopRoutes.post('/cart', shopController.postCard);
+
 shopRoutes.get('/checkout',shopController.getCheckout);
 
 

@@ -5,13 +5,14 @@ exports.getAddProduct = (req, res, next) => {
     // console.log("request to path / of add-something");
     // res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
 
-    res.render('admin/add-product', { 
+    res.render('admin/edit-product', { 
         'pageTitle': 'Add Product',
         isAddProduct: true,
         formCss: true,
         productCss: true,
         activePage: 'add-product',
-        path: '/admin/add-product'
+        path: '/admin/add-product',
+        editing: false
     })
 };
 
@@ -28,6 +29,38 @@ exports.postAddProduct = (req, res, next) => {
     product.save();
     res.redirect('/shop/products');
 };
+
+exports.getEditProduct = (req, res, next) => {
+    // console.log("request to path / of add-something");
+    // res.sendFile(path.join(rootDir, 'views', 'add-product.html'));
+
+    const editMode = req.query.edit;
+
+    if(!editMode) {
+        return res.redirect('/shop');
+        
+    }
+
+    const productId = req.params.productId;
+
+
+    Product.findById(productId, product => {
+        if(!product) {
+            return res.redirect('/shop')
+        }
+        res.render('admin/edit-product', { 
+            'pageTitle': 'Edit Product',
+            isAddProduct: true,
+            formCss: true,
+            productCss: true,
+            activePage: 'add-product',
+            path: '/admin/edit-product',
+            editing: editMode,
+            product: product
+        });
+    })
+};
+
 
 
 exports.getProducts = (req, res, next) => {

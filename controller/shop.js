@@ -1,5 +1,5 @@
-const Product = require('../models/product')
-
+const Product = require('../models/product');
+const Cart = require('../models/cart');
 
 exports.getProducts = (req, res, next) => {
     // console.log("request to path /");
@@ -57,6 +57,16 @@ exports.getCart = (req, res, next) => {
         pageTitle: 'Cart',
         path: '/cart'
     })
+}
+
+exports.postCard = (req, res, next) => {
+    const productId = req.body.productId;
+    console.log(productId);
+    Product.findById(productId, (product) => {
+        Cart.addProduct(productId, product.price);
+    })
+
+    res.redirect('/shop/cart')
 }
 
 exports.getOrders = (req, res, next) => {
