@@ -16,6 +16,10 @@ adminRoutes.get('/products', adminController.getProducts);
 
 adminRoutes.get('/edit-product/:productId', adminController.getEditProduct);
 
+adminRoutes.post('/edit-product', adminController.postEditProduct);
+
+adminRoutes.post('/delete-product', adminController.postDeleteProduct);
+
 
 module.exports = adminRoutes;
 
