@@ -6,27 +6,33 @@ exports.getProducts = (req, res, next) => {
     // console.log(rootDir);
     // res.sendFile(path.join(rootDir, 'views', 'shop.html'));
 
-    const products = Product.fetchAll(products => {
+    Product.fetchAll()
+        .then(([row, fieldData]) => {
             res.render('shop/product-list', { 
-            'pageTitle': 'My Shop', 
-            prods: products, 
-            hasProducts: products.length > 0,
-            isShop: true,
-            formCss: true,
-            productCss: true,
-            activePage: 'products',
-            path: "/products"
+                'pageTitle': 'My Shop', 
+                prods: row, 
+                hasProducts: row.length > 0,
+                isShop: true,
+                formCss: true,
+                productCss: true,
+                activePage: 'products',
+                path: "/products"
+            });
+        })
+        .catch(err => {
+            console.log(err);
         });
-    });
     
 }
 
 exports.getProduct = (req, res, next) => {
     const productId = req.params.productId;
-    Product.findById(productId, product => {
-        console.log(product);
-        res.render('shop/product-detail', {product:product, pageTitle: product.title, path: 'detail' });
-    })
+    Product.findById(productId).then(([rows, fieldData]) => {
+        // console.log(rows[0])
+        res.render('shop/product-detail', {product:rows[0], pageTitle: rows[0].title, path: 'detail' });
+    }).catch(err => {
+        console.log(err)
+    });
 }
 
 
@@ -35,18 +41,22 @@ exports.getIndex = (req, res, next) => {
     // console.log(rootDir);
     // res.sendFile(path.join(rootDir, 'views', 'shop.html'));
 
-    const products = Product.fetchAll(products => {
-        res.render('shop/index', { 
-            'pageTitle': 'My Shop', 
-            prods: products, 
-            hasProducts: products.length > 0,
-            isShop: true,
-            formCss: true,
-            productCss: true,
-            activePage: 'shop',
-            path: "/"
-        });
-    });
+    Product.fetchAll().then(
+        ([rows, fieldData]) => {
+            res.render('shop/index', { 
+                'pageTitle': 'My Shop', 
+                prods: rows, 
+                hasProducts: rows.length > 0,
+                isShop: true,
+                formCss: true,
+                productCss: true,
+                activePage: 'shop',
+                path: "/"
+            });
+        }
+    ).catch(err=>{console.log(err)});
+
+    
     
 }
 
