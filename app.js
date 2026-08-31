@@ -15,6 +15,8 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
+const sequalize = require('./util/database');
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -25,6 +27,20 @@ app.use('/shop', shopRoutes);
 app.use(errorController.get404Page);
 
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-});
+sequalize.sync()
+    .then(result => {
+        console.log(result);
+
+
+        app.listen(3000, () => {
+            console.log('Server is running on port 3000');
+        });
+
+
+    })
+    .catch(err => {
+        console.log(err);
+    });
+
+
+

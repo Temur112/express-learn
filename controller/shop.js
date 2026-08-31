@@ -2,34 +2,29 @@ const Product = require('../models/product');
 const Cart = require('../models/cart');
 
 exports.getProducts = (req, res, next) => {
-    // console.log("request to path /");
-    // console.log(rootDir);
-    // res.sendFile(path.join(rootDir, 'views', 'shop.html'));
 
-    Product.fetchAll()
-        .then(([row, fieldData]) => {
-            res.render('shop/product-list', { 
-                'pageTitle': 'My Shop', 
-                prods: row, 
-                hasProducts: row.length > 0,
-                isShop: true,
-                formCss: true,
-                productCss: true,
-                activePage: 'products',
-                path: "/products"
-            });
-        })
-        .catch(err => {
-            console.log(err);
+    Product.findAll().then( result => {
+        res.render('shop/product-list', { 
+            'pageTitle': 'My Shop', 
+            prods: result, 
+            hasProducts: result.length > 0,
+            isShop: true,
+            formCss: true,
+            productCss: true,
+            activePage: 'products',
+            path: "/products"
         });
+    }).catch( err => {
+        console.log(err);
+    })
     
 }
 
 exports.getProduct = (req, res, next) => {
     const productId = req.params.productId;
-    Product.findById(productId).then(([rows, fieldData]) => {
+    Product.findByPk(productId).then((result) => {
         // console.log(rows[0])
-        res.render('shop/product-detail', {product:rows[0], pageTitle: rows[0].title, path: 'detail' });
+        res.render('shop/product-detail', {product:result, pageTitle: result.title, path: 'detail' });
     }).catch(err => {
         console.log(err)
     });
@@ -41,12 +36,12 @@ exports.getIndex = (req, res, next) => {
     // console.log(rootDir);
     // res.sendFile(path.join(rootDir, 'views', 'shop.html'));
 
-    Product.fetchAll().then(
-        ([rows, fieldData]) => {
+    Product.findAll().then(
+        result => {
             res.render('shop/index', { 
                 'pageTitle': 'My Shop', 
-                prods: rows, 
-                hasProducts: rows.length > 0,
+                prods: result, 
+                hasProducts: result.length > 0,
                 isShop: true,
                 formCss: true,
                 productCss: true,
@@ -54,7 +49,9 @@ exports.getIndex = (req, res, next) => {
                 path: "/"
             });
         }
-    ).catch(err=>{console.log(err)});
+    ).catch(err => {
+        console.log(err)
+    })
 
     
     
