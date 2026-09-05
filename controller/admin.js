@@ -25,7 +25,7 @@ exports.postAddProduct = (req, res, next) => {
     const price = req.body.price;
     const description = req.body.description;
 
-    Product.create({
+    req.user.createProduct({
         title: title,
         price: price,
         imageUrl: imageUrl,
@@ -53,7 +53,7 @@ exports.getEditProduct = (req, res, next) => {
     const productId = req.params.productId;
 
 
-    Product.findByPk(productId).then( result => {
+    req.user.getProducts({where: {id: productId}}).then( result => {
         if(!result) {
             return res.redirect('/shop')
         }
@@ -65,7 +65,7 @@ exports.getEditProduct = (req, res, next) => {
             activePage: 'add-product',
             path: '/admin/edit-product',
             editing: editMode,
-            product: result
+            product: result[0]
         });
     }).catch( err => {
         console.log(err);
@@ -107,7 +107,7 @@ exports.postDeleteProduct = (req, res, next) => {
 
 
 exports.getProducts = (req, res, next) => {
-    Product.findAll().then(
+    req.user.getProducts().then(
         products => {
         res.render('admin/products', { 
             'pageTitle': 'Admin products', 
