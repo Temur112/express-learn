@@ -1,0 +1,138 @@
+.cart {
+    width: 42rem;
+    max-width: 100%;
+    margin: auto;
+}
+
+.cart__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.cart__header h1 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.cart__count {
+    color: #4d4d4d;
+    font-size: 0.9rem;
+}
+
+.cart__item-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    overflow: hidden;
+}
+
+.cart__item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.cart__item:last-child {
+    border-bottom: none;
+}
+
+.cart__item-image {
+    width: 3.5rem;
+    height: 3.5rem;
+    flex-shrink: 0;
+    border-radius: 4px;
+    background: #f0f0f0;
+    object-fit: cover;
+}
+
+.cart__item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cart__item-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 0.15rem 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cart__item-meta {
+    font-size: 0.85rem;
+    color: #4d4d4d;
+    margin: 0;
+}
+
+.cart__item-qty {
+    display: inline-block;
+    background: #e0f2f1;
+    color: #00695c;
+    border-radius: 10px;
+    padding: 0.05rem 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-right: 0.4rem;
+}
+
+.cart__item-price {
+    font-weight: 700;
+    color: #00695c;
+    white-space: nowrap;
+}
+
+.cart__item .btn {
+    border-color: #bbb;
+    color: #4d4d4d;
+    font-size: 0.85rem;
+}
+
+.cart__item .btn:hover,
+.cart__item .btn:active {
+    background: #c62828;
+    border-color: #c62828;
+    color: white;
+}
+
+.cart__summary {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1rem 0;
+}
+
+.cart__total {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.cart__empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #4d4d4d;
+}
+
+.cart__empty h1 {
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin: 0 0 1rem 0;
+}
+
+@media (max-width: 550px) {
+    .cart__item {
+        flex-wrap: wrap;
+    }
+
+    .cart__item-info {
+        flex-basis: calc(100% - 4.5rem);
+    }
+}

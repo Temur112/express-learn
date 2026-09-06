@@ -20,6 +20,7 @@ shopRoutes.post('/cart-delete', shopController.postCartDelete);
 
 shopRoutes.get('/checkout',shopController.getCheckout);
 
+shopRoutes.post('/create-order', shopController.postOrder);
 
 shopRoutes.get('/orders',shopController.getOrders);
 
