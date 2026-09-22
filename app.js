@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const mongoose = require('mongoose');
 
 const adminRoutes = require('./routes/admin.routes');
 const shopRoutes = require('./routes/shop.routes');
@@ -45,43 +46,51 @@ app.use('/shop', shopRoutes);
 
 app.use(errorController.get404Page);
 
-
-
-Product.belongsTo(User, {
-    constraints: true,
-    onDelete: 'CASCADE'
-});
-User.hasMany(Product);
-User.hasOne(Cart);
-Cart.belongsTo(User);
-Cart.belongsToMany(Product, {through: CartItem});
-Product.belongsToMany(Cart, {through: CartItem});
-Order.belongsTo(User);
-User.hasMany(Order);
-Order.belongsToMany(Product, {through: OrdertItem});
-
-
-sequalize
-    // .sync({force: true})
-    .sync()
+mongoose
+    .connect('mongodb://root:example@localhost:27017/mydb?authSource=admin')
     .then(result => {
-        User.findByPk(1).then(user => {
-            if(!user) {
-                return User.create({name: 'Max', email: 'test@example.com'});
-            }
-
-            return Promise.resolve(user);
-        }).then(user => {
-            console.log(user);
-            user.createCart();
-            app.listen(3000, () => {
-                console.log('Server is running on port 3000');
-            });
-        })
+        console.log('connected');
     })
     .catch(err => {
         console.log(err);
-    });
+    })
+
+
+// Product.belongsTo(User, {
+//     constraints: true,
+//     onDelete: 'CASCADE'
+// });
+// User.hasMany(Product);
+// User.hasOne(Cart);
+// Cart.belongsTo(User);
+// Cart.belongsToMany(Product, {through: CartItem});
+// Product.belongsToMany(Cart, {through: CartItem});
+// Order.belongsTo(User);
+// User.hasMany(Order);
+// Order.belongsToMany(Product, {through: OrdertItem});
+
+
+// sequalize
+//     // .sync({force: true})
+//     .sync()
+//     .then(result => {
+//         User.findByPk(1).then(user => {
+//             if(!user) {
+//                 return User.create({name: 'Max', email: 'test@example.com'});
+//             }
+
+//             return Promise.resolve(user);
+//         }).then(user => {
+//             console.log(user);
+//             user.createCart();
+//             app.listen(3000, () => {
+//                 console.log('Server is running on port 3000');
+//             });
+//         })
+//     })
+//     .catch(err => {
+//         console.log(err);
+//     });
 
 
 
