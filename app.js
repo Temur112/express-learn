@@ -7,7 +7,6 @@ const adminRoutes = require('./routes/admin.routes');
 const shopRoutes = require('./routes/shop.routes');
 const errorController = require('./controller/error');
 
-
 // const { engine } = require('express-handlebars');
 const app = express();
 
@@ -43,6 +42,16 @@ app.use('/admin', adminRoutes);
 app.use('/shop', shopRoutes);
 
 
+app.use((req, res, next) => {
+    User.findById('6ac15f8f07811da0c5c46c20').then(user => {
+        req.user = user;
+        next();
+    }).catch(err => {
+        console.log(err);
+    })
+})
+
+
 
 app.use(errorController.get404Page);
 
@@ -50,10 +59,25 @@ mongoose
     .connect('mongodb://root:example@localhost:27017/mydb?authSource=admin')
     .then(result => {
         console.log('connected');
+        User.findOne().then(user => {
+            if(!user) {
+                const user = new User({
+                name: 'Max',
+                email: 'max@test.com'
+            });
+            user.save();
+            }
+        })
+        
+        app.listen(3001, () => {
+            console.log("app is running on port 3001");
+        })
+
     })
     .catch(err => {
         console.log(err);
     })
+
 
 
 // Product.belongsTo(User, {

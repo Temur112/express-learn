@@ -1,9 +1,10 @@
 const Product = require('../models/product');
 const Cart = require('../models/cart');
+const { default: mongoose } = require('mongoose');
 
 exports.getProducts = (req, res, next) => {
 
-    Product.findAll().then( result => {
+    Product.find().then( result => {
         res.render('shop/product-list', { 
             'pageTitle': 'My Shop', 
             prods: result, 
@@ -22,7 +23,11 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
     const productId = req.params.productId;
-    Product.findByPk(productId).then((result) => {
+
+    if (!mongoose.Types.ObjectId.isValid(productId)){
+        return next();
+    }
+    Product.findById(productId).then((result) => {
         // console.log(rows[0])
         res.render('shop/product-detail', {product:result, pageTitle: result.title, path: 'detail' });
     }).catch(err => {
@@ -36,11 +41,10 @@ exports.getIndex = (req, res, next) => {
     // console.log(rootDir);
     // res.sendFile(path.join(rootDir, 'views', 'shop.html'));
 
-    req.user.getProducts().then(products => {
-        if(!products) {
-            products = [];
-        }
-        res.render('shop/index', { 
+
+    Product.find()
+        .then(products => {
+            res.render('shop/index', { 
                 pageTitle: 'My Shop', 
                 prods: products, 
                 hasProducts: products.length > 0,
@@ -50,9 +54,29 @@ exports.getIndex = (req, res, next) => {
                 activePage: 'shop',
                 path: "/"
             });
-    }).catch(err => {
-        console.log(err)
-    })
+        })
+        .catch(err => {
+            console.log(err)
+        })
+
+
+    // req.user.getProducts().then(products => {
+    //     if(!products) {
+    //         products = [];
+    //     }
+    //     res.render('shop/index', { 
+    //             pageTitle: 'My Shop', 
+    //             prods: products, 
+    //             hasProducts: products.length > 0,
+    //             isShop: true,
+    //             formCss: true,
+    //             productCss: true,
+    //             activePage: 'shop',
+    //             path: "/"
+    //         });
+    // }).catch(err => {
+    //     console.log(err)
+    // })
 
     
     
